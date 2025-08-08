@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <style>
+        /* 기본 스타일 재설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            text-decoration: none;
+            color: black;
+        }
+
+        #wrap {
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        /* 헤더 스타일 */
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #cccccc;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0 25px;
+            background-color: white; /* 헤더 배경색을 흰색으로 설정하여 가시성 확보 */
+            z-index: 1000; /* 헤더가 다른 요소 위에 오도록 설정 */
+            max-width: 1720px; /* 헤더 최대 너비 설정 */
+            margin-left: auto; /* 헤더를 가로로 중앙 정렬 */
+            margin-right: auto; /* 헤더를 가로로 중앙 정렬 */
+        }
+
+        /* 메뉴 스타일 */
+        .menu ul {
+            display: flex;
+            flex-wrap: nowrap; /* 메뉴 항목이 줄바꿈되지 않도록 설정 */
+        }
+        .menu ul li {
+            padding: 25px 30px;
+            font-size: 12pt;
+            position: relative; /* ::after 가상 요소를 위한 상대 위치 설정 */
+            overflow: hidden; /* 초기 테두리를 숨기기 위함 */
+            white-space: nowrap; /* 메뉴 항목 텍스트가 줄바꿈되지 않도록 설정 */
+        }
+
+        /* 메뉴 항목 호버 시 확장되는 하단 테두리 효과 */
+        .menu ul li::after {
+            content: '';
+            position: absolute;
+            bottom: 0; /* li 요소의 하단에 위치 */
+            left: 50%; /* 중앙에서 시작 */
+            transform: translateX(-50%); /* 가로 중앙 정렬 */
+            width: 0; /* 초기 너비는 0 */
+            height: 2px; /* 테두리 두께 */
+            background-color: blue; /* 테두리 색상 */
+            transition: width 0.3s ease-in-out; /* 너비 변화에 부드러운 전환 효과 적용 */
+        }
+
+        .menu ul li:hover::after {
+            width: 100%; /* 호버 시 전체 너비로 확장 */
+        }
+
+        .menu ul li .active {
+            color: blue;
+            font-weight: bold;
+        }
+
+        /* 언어 선택 메뉴 스타일 */
+        .lang a:last-child {
+            margin-left: 30px;
+        }
+
+        .right-menu .lang .active {
+            color: blue;
+            border-bottom: 1px solid blue;
+            font-weight: bold;
+        }
+
+        /* 본문 내용 스타일 */
+        #contents {
+            padding-top: 250px; /* 고정된 헤더 높이를 고려하여 상단 패딩 조정 */
+        }
+
+        .contents-title {
+            font-size: 18pt;
+            text-align: center;
+            line-height: 40px;
+            overflow-x: auto; /* 내용이 넘칠 경우 가로 스크롤 허용 */
+            padding-bottom: 10px; /* 스크롤바가 텍스트와 겹치지 않도록 패딩 추가 */
+        }
+
+        /* 이미지 정보 섹션 스타일 */
+        .contents-info {
+            display: flex;
+            justify-content: center; /* 이미지 그리드를 중앙 정렬 */
+            flex-wrap: wrap; /* 작은 화면에서 항목이 줄바꿈되도록 허용 */
+            margin: 100px auto 200px auto;
+            padding: 0 80px;
+        }
+
+        .contents-info div {
+            width: calc(33.333% - 20px); /* 3열 레이아웃 (간격 포함) */
+            min-width: 300px; /* 반응성을 위한 최소 너비 */
+            box-sizing: border-box; /* 패딩과 테두리를 요소의 전체 너비와 높이에 포함 */
+            position: relative; /* 오버레이를 위한 상대 위치 설정 */
+            overflow: hidden; /* 오버레이가 div 밖으로 나가지 않도록 설정 */
+        }
+
+        .contents-info img {
+            width: 100%; /* 이미지가 컨테이너를 채우도록 설정 */
+            height: auto; /* 가로 세로 비율 유지 */
+            display: block; /* 이미지 아래 추가 공간 제거 */
+            transition: transform 0.3s ease-in-out; /* 이미지 확대 효과를 위한 전환 추가 */
+        }
+
+        /* 이미지 호버 시 어둡게 불투명해지는 효과 */
+        .contents-info div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0); /* 초기 투명 */
+            opacity: 0; /* 초기 불투명도 0 */
+            transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out; /* 부드러운 전환 */
+            z-index: 1; /* 이미지 위에 오도록 설정 */
+        }
+
+        /* 오버레이 텍스트 및 화살표 컨테이너 */
+        .contents-info div .overlay-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 2; /* 오버레이 배경 위에 오도록 설정 */
+            pointer-events: none; /* 텍스트/화살표가 클릭을 방해하지 않도록 설정 */
+        }
+
+        .contents-info div .overlay-content .arrow {
+            font-size: 2em; /* 화살표 크기 */
+            display: block; /* 화살표를 블록 요소로 만들어 줄바꿈 */
+            color: white;
+            text-align: left;
+        }
+
+        .contents-info div .overlay-content p {
+            /*font-weight: bold;*/
+            white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+            color: white;
+            text-align: left;
+            padding: 0 20px;
+        }
+
+        .contents-info div .overlay-content .item-title0 {
+            /*font-weight: bold;*/
+            margin-top: 80px;
+        }
+
+        .contents-info div .overlay-content .item-title1 {
+            font-weight: bold;
+            /*margin-top: 80px;*/
+            font-size: 1.2em;
+        }
+
+        .contents-info div .overlay-content .item-title2 {
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+
+        .contents-info div:hover::before {
+            background-color: rgba(0, 0, 0, 0.5); /* 호버 시 반투명 검정색 */
+            opacity: 1; /* 호버 시 불투명도 1 */
+        }
+
+        /* 이미지 호버 시 약간 확대되는 효과 */
+        .contents-info div:hover img {
+            transform: scale(1.05); /* 호버 시 이미지 1.05배 확대 */
+        }
+
+        .contents-info div:hover .overlay-content {
+            opacity: 1;
+        }
+
+        /* 헤더 메뉴 항목을 위한 반응형 조정 */
+        @media (max-width: 1025px) {
+            .menu ul li {
+                padding: 25px 15px; /* 가로 패딩 감소 */
+                font-size: 11pt; /* 필요시 글꼴 크기 약간 감소 */
+            }
+        }
+
+        /* contents-info 이미지 그리드를 위한 반응형 조정 */
+        @media (max-width: 768px) {
+            .contents-info div {
+                width: calc(50% - 20px); /* 중간 화면에서 2열 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contents-info div {
+                width: calc(100% - 20px); /* 작은 화면에서 1열 */
+            }
+        }
+
+        /* 매우 작은 화면에 대한 추가 조정 (메뉴가 여전히 넘칠 경우) */
+        @media (max-width: 700px) {
+            #header {
+                padding: 0 10px; /* 헤더 패딩 감소 */
+            }
+            .menu ul li {
+                padding: 20px 10px; /* 가로 패딩 추가 감소 */
+                font-size: 10pt; /* 글꼴 크기 추가 감소 */
+            }
+            .lang a:last-child {
+                margin-left: 15px; /* 언어 링크 간격 조정 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div id="wrap">
+
+    <div id="header">
+        <div class="logo-wrap">
+            <a href="/"><img src="img/logo.png" alt="Company Logo"></a>
+        </div>
+
+        <div class="menu">
+            <ul>
+                <li><a class="menu1" href="javascript:activeMenu('menu1')">인크로스</a></li>
+                <li><a href="#">사업영역</a></li>
+                <li><a href="#">인사이트</a></li>
+                <li><a href="#">홍보</a></li>
+                <li><a href="#">투자정보</a></li>
+                <li><a href="#">채용</a></li>
+                <li><a href="#">문의하기</a></li>
+            </ul>
+        </div>
+
+        <div class="right-menu">
+            <div class="lang">
+                <a class="kor-lang" href="javascript:activeMenu('kor-lang');">KOR</a>
+                <a class="eng-lang" href="javascript:activeMenu('eng-lang');">ENG</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="contents">
+        <div class="contents-title">
+            <p>인크로스는 업계를 선도하는 No.1 디지털 광고·마케팅 전문 기업으로</p>
+            <p>미디어렙, 퍼포먼스 마케팅, 검색광고, PPL, 커머스 운영에 이르기까지</p>
+            <p>마케팅 실행 과정의 모든 영역을 커버합니다.</p>
+        </div>
+
+        <div class="contents-info">
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">디지털 광고</p>
+                    <p class="item-title2">미디어 플래닝·바잉 통한 효율적 디자털 광고 운영</p>
+                </div>
+            </div>
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">커머스 운영</p>
+                    <p class="item-title2">커머스 기획, 구축, 개발, 운영 원스톱 서비스</p>
+                </div>
+            </div>
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">콘텐츠랩</p>
+                    <p class="item-title2">크리에이터 생태계를 연결하는 AI 기반 PPL 플랫폼</p>
+                </div>
+            </div>
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">미디어 / 솔루션</p>
+                    <p class="item-title2">인크로스만의 디지털 광고 미디어와 솔루션</p>
+                </div>
+            </div>
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">인크로스 데이터랩</p>
+                    <p class="item-title2">진정한 타깃을 발굴하는 인사이트 연구소</p>
+                </div>
+            </div>
+            <div>
+                <img src="img/test.png" alt="test-img">
+                <div class="overlay-content">
+                    <p class="item-title0"><span class="arrow">&#x2192;</span></p>
+                    <p class="item-title1">문의하기</p>
+                    <p class="item-title2">도움이 필요하신가요?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+
+<script>
+    // 언어 메뉴 활성화 함수
+    const activeMenu = (val) => {
+        // 모든 언어 링크에서 'active' 클래스 제거
+        document.getElementsByClassName('kor-lang')[0].classList.remove('active');
+        document.getElementsByClassName('eng-lang')[0].classList.remove('active');
+
+        // 클릭된 언어 링크에 'active' 클래스 추가
+        let el = document.getElementsByClassName(val)[0];
+        el.classList.add('active');
+    }
+</script>
+
+</html>

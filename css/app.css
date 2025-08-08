@@ -1,0 +1,327 @@
+/* 기본 스타일 재설정 */
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-decoration: none;
+    color: black;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    background-color: rgb(249, 249, 249);
+}
+
+/* 헤더 스타일 */
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #cccccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 25px;
+    background-color: white;
+    z-index: 1000;
+    max-width: 1720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 메뉴 스타일 */
+.menu ul {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.menu ul li {
+    padding: 25px 30px;
+    font-size: 12pt;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* 메뉴 항목 호버 시 확장되는 하단 테두리 효과 */
+.menu ul li::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: blue;
+    transition: width 0.3s ease-in-out;
+}
+
+.menu ul li:hover::after {
+    width: 100%;
+}
+
+/* 클릭 시 활성화되는 메뉴 항목 스타일 (li에 active-menu-item 클래스 추가) */
+.menu ul li.active-menu-item a {
+    color: blue;
+    font-weight: bold;
+}
+
+/* 클릭 시 활성화되는 메뉴 항목의 하단 테두리 고정 (li에 active-menu-item 클래스 추가) */
+.menu ul li.active-menu-item::after {
+    width: 100%;
+}
+
+/* 언어 선택 메뉴 스타일 */
+.lang a:last-child {
+    margin-left: 30px;
+}
+
+.right-menu .lang .active {
+    color: blue;
+    border-bottom: 1px solid blue;
+    font-weight: bold;
+}
+
+/* 본문 내용 스타일 */
+#contents {
+    padding-top: 250px;
+}
+
+.contents-title {
+    font-size: 18pt;
+    text-align: center;
+    line-height: 40px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+/* 이미지 정보 섹션 스타일 */
+.contents-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 100px auto 200px auto;
+    padding: 0 80px;
+}
+
+.contents-info div {
+    width: calc(33.333% - 20px);
+    min-width: 300px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.contents-info img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* 이미지 호버 시 어둡게 불투명해지는 효과 및 텍스트/화살표 오버레이 */
+.contents-info div::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+    transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    z-index: 1;
+}
+
+/* 오버레이 텍스트 및 화살표 컨테이너 */
+.contents-info div .overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.contents-info div .overlay-content strong {
+    width: 2rem;
+    height: 2rem;
+    background-color: rgba(91, 91, 91, 1);
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    color: #fff;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 99px;
+}
+
+.contents-info div .overlay-content .arrow {
+    color: white;
+    transform: rotate(-45deg);
+    display: inline-block;
+    transform-origin: 68% 40%;
+}
+
+.contents-info div .overlay-content p {
+    white-space: nowrap;
+    color: white;
+    text-align: left;
+    padding: 0 20px;
+}
+
+.contents-info div .overlay-content .item-title0 {
+    margin-top: 80px;
+}
+
+.contents-info div .overlay-content .item-title1 {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.contents-info div .overlay-content .item-title2 {
+    margin-top: 10px;
+    font-size: 0.8em;
+}
+
+/* 호버 시 오버레이 효과 */
+.contents-info div:hover::before {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+}
+
+/* 이미지 호버 시 약간 확대되는 효과 */
+.contents-info div:hover img {
+    transform: scale(1.05);
+}
+
+.contents-info div:hover .overlay-content {
+    opacity: 1;
+}
+
+
+/* 커머스 */
+.commerce-contents-title p {
+    font-size: 12pt;
+    text-align: center;
+    padding-bottom: 10px;
+    font-weight: 500;
+}
+
+.commerce-contents-title p:first-child {
+    font-size: 24pt;
+    padding-bottom: 40px;
+}
+
+.commerce-contents-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 100px auto 200px auto;
+    padding: 0 80px;
+    gap: 60px 30px;
+}
+
+.commerce-contents-info-wrap {
+    width: 300px;
+    position: relative;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.contents-info-item-title {
+    background-color: rgb(251, 37, 62);
+    border-radius: 99px;
+    padding: 10px 10px;
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+    position: absolute;
+    top: -20px;
+    left: 50px;
+}
+
+.contents-info-item-title span {
+    color: white;
+    font-weight: 500;
+    font-size: 1.4em;
+}
+
+.contents-info-item {
+    text-align: center;
+}
+
+.contents-info-item .item-wrap {
+    padding: 20px 0;
+}
+
+.contents-info-item .item-wrap img {
+    width: 200px;
+    height: auto;
+}
+
+.contents-info-item .item-wrap p {
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.contents-info-item .item-wrap .first {
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* 헤더 메뉴 항목을 위한 반응형 조정 */
+@media (max-width: 1025px) {
+    .menu ul li {
+        padding: 25px 15px;
+        font-size: 11pt;
+    }
+}
+
+/* contents-info 이미지 그리드를 위한 반응형 조정 */
+@media (max-width: 768px) {
+    .contents-info div {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .contents-info div {
+        width: calc(100% - 20px);
+    }
+}
+
+/* 매우 작은 화면에 대한 추가 조정 (메뉴가 여전히 넘칠 경우) */
+@media (max-width: 700px) {
+    #header {
+        padding: 0 10px;
+    }
+
+    .menu ul li {
+        padding: 20px 10px;
+        font-size: 10pt;
+    }
+
+    .lang a:last-child {
+        margin-left: 15px;
+    }
+
+    .contents-info div .overlay-content p {
+        font-size: 1.2em;
+    }
+
+    .contents-info div .overlay-content .arrow {
+        font-size: 1.5em;
+    }
+}
