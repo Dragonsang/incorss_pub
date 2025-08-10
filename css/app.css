@@ -10,8 +10,8 @@
 #wrap {
     width: 100%;
     margin: 0 auto;
-    overflow: hidden;
-    background-color: rgb(249, 249, 249);
+    /*overflow: hidden;*/
+    /*background-color: rgb(249, 249, 249);*/
 }
 
 /* 헤더 스타일 */
@@ -27,7 +27,6 @@
     padding: 0 25px;
     background-color: white;
     z-index: 1000;
-    max-width: 1720px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -87,7 +86,9 @@
 
 /* 본문 내용 스타일 */
 #contents {
-    padding-top: 250px;
+    padding-top: 150px; /* 헤더 높이를 고려하여 padding 조정 */
+    background-color: rgb(249, 249, 249);
+    height: 100%;
 }
 
 .contents-title {
@@ -211,6 +212,10 @@
 
 
 /* 커머스 */
+.commerce-contents-title {
+    margin-top: 100px;
+}
+
 .commerce-contents-title p {
     font-size: 12pt;
     text-align: center;
@@ -224,19 +229,28 @@
 }
 
 .commerce-contents-info {
+    /*width: 60%;*/
+    /*display: grid;*/
+    /*grid-template-columns: repeat(3, 1fr);*/
+    /*justify-items: center; !* 그리드 아이템 중앙 정렬 추가 *!*/
+    margin: 100px auto 200px auto;
+    /*padding: 0 80px;*/
+    /*gap: 60px 0;*/
+}
+
+.commerce-contents-info .floor-wrap {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    margin: 100px auto 200px auto;
-    padding: 0 80px;
-    gap: 60px 30px;
+    margin-bottom: 60px;
 }
 
 .commerce-contents-info-wrap {
     width: 300px;
+    height: 300px;
     position: relative;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 40px;
 }
 
 .contents-info-item-title {
@@ -248,7 +262,8 @@
     margin: 0 auto;
     position: absolute;
     top: -20px;
-    left: 50px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .contents-info-item-title span {
@@ -262,7 +277,7 @@
 }
 
 .contents-info-item .item-wrap {
-    padding: 20px 0;
+    margin-top: 20px;
 }
 
 .contents-info-item .item-wrap img {
@@ -290,6 +305,18 @@
 }
 
 /* contents-info 이미지 그리드를 위한 반응형 조정 */
+@media (max-width: 768px) {
+    .commerce-contents-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .commerce-contents-info {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .contents-info div {
         width: calc(50% - 20px);
